@@ -9,7 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JavaBean to interact with the CSD430 movie database.
+ * Jonathan Davis
+ * CSD430 Module 5/6
+ * within This code you will find the MovieBean class that interacts with the MySQL database.
+ * The MovieBean class includes methods to retrieve movie titles and data, as well as to insert new movies into the database.
+ * This class is designed to be used within a web application, and it requires a MySQL database to function.
+ * 
  */
 public class MovieBean {
 
