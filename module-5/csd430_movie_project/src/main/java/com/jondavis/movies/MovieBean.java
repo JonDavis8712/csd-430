@@ -5,16 +5,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Jonathan Davis
- * CSD430 Module 5/6
- * within This code you will find the MovieBean class that interacts with the MySQL database.
- * The MovieBean class includes methods to retrieve movie titles and data, as well as to insert new movies into the database.
- * This class is designed to be used within a web application, and it requires a MySQL database to function.
- * 
+ * JavaBean to interact with the CSD430 movie database.
+ * This class handles all database connections and queries for creating and reading data.
  */
 public class MovieBean {
 
@@ -22,6 +20,9 @@ public class MovieBean {
     private static final String DB_USER = "JonDavis";
     private static final String DB_PASSWORD = "pass";
 
+    /**
+     * Establishes a connection to the database.
+     */
     private Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -32,50 +33,59 @@ public class MovieBean {
     }
 
     /**
-     * Retrieves all movie IDs and titles to populate the dropdown menu.
+     * NEW METHOD: Adds a new movie record to the database.
+     * The movie_id is not needed as it is an auto-incrementing primary key.
+     * @param title The title of the movie.
+     * @param director The director of the movie.
+     * @param releaseYear The year the movie was released.
+     * @param genre The genre of the movie.
      */
-    public Map<Integer, String> getAllMovieTitles() {
-        Map<Integer, String> movies = new HashMap<>();
-        String sql = "SELECT movie_id, title FROM Jon_movies_data ORDER BY title ASC";
+    public void addMovie(String title, String director, int releaseYear, String genre) {
+        // The SQL query for inserting a new record. The '?' are placeholders.
+        String sql = "INSERT INTO Jon_movies_data (title, director, release_year, genre) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Set the values for the placeholders in the SQL query
+            pstmt.setString(1, title);
+            pstmt.setString(2, director);
+            pstmt.setInt(3, releaseYear);
+            pstmt.setString(4, genre);
+
+            // Execute the query to insert the data
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Print errors to the server console for debugging
+        }
+    }
+
+    /**
+     * NEW METHOD: Retrieves all movie records from the database.
+     * @return A List of String arrays, where each inner array represents a full movie record.
+     */
+    public List<String[]> getAllMovies() {
+        List<String[]> allMovies = new ArrayList<>();
+        String sql = "SELECT * FROM Jon_movies_data ORDER BY movie_id DESC";
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                // This line is now correct, using .put() for a Map
-                movies.put(rs.getInt("movie_id"), rs.getString("title"));
+                String[] movieData = new String[5];
+                movieData[0] = rs.getString("movie_id");
+                movieData[1] = rs.getString("title");
+                movieData[2] = rs.getString("director");
+                movieData[3] = rs.getString("release_year");
+                movieData[4] = rs.getString("genre");
+                allMovies.add(movieData);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return movies;
+        return allMovies;
     }
-
-    /**
-     * Retrieves all data for a specific movie by its ID.
-     */
-    public String[] getMovieById(int movieId) {
-        String[] movieData = null;
-        String sql = "SELECT * FROM Jon_movies_data WHERE movie_id = ?";
-
-        try (Connection conn = getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, movieId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    movieData = new String[5];
-                    movieData[0] = rs.getString("movie_id");
-                    movieData[1] = rs.getString("title");
-                    movieData[2] = rs.getString("director");
-                    movieData[3] = rs.getString("release_year");
-                    movieData[4] = rs.getString("genre");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return movieData;
-    }
+    
 }

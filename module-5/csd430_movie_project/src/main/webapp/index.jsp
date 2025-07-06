@@ -2,12 +2,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>CSD430 Project Jon Davis Module 5/6</title>
+    <title>Jon Davis' CSD430 Project</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+    </style>
 </head>
 <body>
-    <h1>CSD430 Project Modules</h1>
+    <h1>Jon Davis' CSD430 Project</h1>
+    <h2>Module Deliverables</h2>
     <ul>
-        <li><a href="movies.jsp">Module 5/6: Movie Database Viewer</a></li>
-        </ul>
+        <li><a href="movies.jsp">Module 6 - Create/Read Movie Records</a></li>
+        <!-- As you complete other modules, you will add more links here -->
+    </ul>
 </body>
 </html>
