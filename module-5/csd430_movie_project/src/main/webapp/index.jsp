@@ -12,7 +12,7 @@
     <h2>Module Deliverables</h2>
     <ul>
         <li><a href="movies.jsp">Module 6 - Create/Read Movie Records</a></li>
-        <!-- As you complete other modules, you will add more links here -->
+        <!-- add more links here -->
     </ul>
 </body>
 </html>

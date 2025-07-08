@@ -1,0 +1,1 @@
+ALTER TABLE Jon_movies_data DROP PRIMARY KEY;
