@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    // This new page, allows the user to delete movie records
     <meta charset="UTF-8">
     <title>Delete Movie Records</title>
     <style>
